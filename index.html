@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#6754e8" />
+  <title>Créateur d'application</title>
+  <style>
+    :root {
+      --bg: #f5f6fb;
+      --panel: #ffffff;
+      --line: #e7e9f2;
+      --ink: #1d2437;
+      --muted: #667085;
+      --purple: #6754e8;
+      --purple-dark: #5143d3;
+      --green: #0e8f5a;
+      --green-bg: #ebfff3;
+      --warning: #9e6900;
+      --warning-bg: #fff9ea;
+      --shadow: 0 12px 32px rgba(18, 23, 40, 0.06);
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      min-height: 100%;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+    }
+
+    body {
+      padding: 24px;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 24px;
+      padding: 16px 20px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+    }
+
+    .brand-mark {
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      border-radius: 10px;
+      background: var(--purple);
+      color: white;
+      font-size: 18px;
+    }
+
+    .topnote {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 24px;
+    }
+
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      box-shadow: var(--shadow);
+    }
+
+    .form-panel {
+      padding: 26px;
+    }
+
+    .header {
+      margin-bottom: 18px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 12px;
+      border-radius: 999px;
+      background: #f0edff;
+      color: var(--purple-dark);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    h1 {
+      margin: 16px 0 10px;
+      font-size: clamp(32px, 4vw, 48px);
+      line-height: 1.06;
+      letter-spacing: -0.06em;
+    }
+
+    .subtitle {
+      margin: 0;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    .field {
+      margin-top: 18px;
+    }
+
+    label, .field-title {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    input[type="text"],
+    input[type="url"] {
+      width: 100%;
+      height: 46px;
+      padding: 0 14px;
+      border: 1px solid #dfe2ec;
+      border-radius: 10px;
+      background: white;
+      color: var(--ink);
+      outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    input[type="text"]:focus,
+    input[type="url"]:focus {
+      border-color: var(--purple);
+      box-shadow: 0 0 0 4px rgba(103, 84, 232, 0.12);
+    }
+
+    .hint {
+      margin-top: 7px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .platform-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .platform {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-height: 48px;
+      padding: 10px 12px;
+      border: 1px solid #dfe2ec;
+      border-radius: 10px;
+      background: #fff;
+      cursor: pointer;
+    }
+
+    .platform:has(input:checked) {
+      border-color: var(--purple);
+      background: #f7f5ff;
+    }
+
+    .platform input {
+      accent-color: var(--purple);
+      transform: scale(1.15);
+    }
+
+    .color-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    input[type="color"] {
+      width: 46px;
+      height: 42px;
+      padding: 4px;
+      border: 1px solid #dfe2ec;
+      border-radius: 10px;
+      background: white;
+      cursor: pointer;
+    }
+
+    .color-value {
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    button {
+      width: 100%;
+      height: 50px;
+      margin-top: 20px;
+      border: none;
+      border-radius: 12px;
+      background: var(--purple);
+      color: white;
+      font-weight: 800;
+      cursor: pointer;
+      transition: transform 0.08s ease, background 0.2s ease;
+    }
+
+    button:hover {
+      background: var(--purple-dark);
+    }
+
+    button:active {
+      transform: translateY(1px);
+    }
+
+    .status {
+      display: none;
+      margin-top: 16px;
+      padding: 12px 14px;
+      border-radius: 12px;
+      font-size: 13px;
+      line-height: 1.5;
+      border: 1px solid transparent;
+    }
+
+    .status.success {
+      display: block;
+      color: var(--green);
+      background: var(--green-bg);
+      border-color: #bfead0;
+    }
+
+    .status.warning {
+      display: block;
+      color: var(--warning);
+      background: var(--warning-bg);
+      border-color: #f2d79b;
+    }
+
+    .preview-panel {
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .preview-head {
+      width: 100%;
+      margin-bottom: 20px;
+      font-size: 14px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .phone {
+      width: 230px;
+      height: 410px;
+      padding: 10px;
+      border-radius: 30px;
+      background: #202736;
+      box-shadow: 0 18px 38px rgba(25, 31, 48, 0.18);
+    }
+
+    .screen {
+      height: 100%;
+      overflow: hidden;
+      border-radius: 22px;
+      background: #fff;
+    }
+
+    .status-bar {
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 13px;
+      font-size: 9px;
+      font-weight: 800;
+      color: #1f2430;
+    }
+
+    .app-header {
+      height: 46px;
+      display: flex;
+      align-items: center;
+      padding: 0 14px;
+      background: var(--purple);
+      color: white;
+      font-size: 13px;
+      font-weight: 700;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .preview-content {
+      height: 268px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+      padding: 16px;
+      text-align: center;
+      background:
+        repeating-linear-gradient(0deg, #ffffff, #ffffff 30px, #f3f5f9 31px);
+      color: #6b7288;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .preview-icon {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      background: #efeaff;
+      color: var(--purple);
+      border-radius: 12px;
+      font-size: 22px;
+    }
+
+    .site-url {
+      max-width: 180px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      font-size: 10px;
+      color: #8b90a1;
+    }
+
+    .bottom-nav {
+      height: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      border-top: 1px solid #eceef4;
+      color: #7a8192;
+      font-size: 9px;
+    }
+
+    .preview-caption {
+      max-width: 320px;
+      margin-top: 16px;
+      color: var(--muted);
+      font-size: 12px;
+      text-align: center;
+      line-height: 1.5;
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 28px;
+    }
+
+    .step {
+      padding: 18px 18px 16px;
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+    }
+
+    .step-number {
+      width: 30px;
+      height: 30px;
+      display: grid;
+      place-items: center;
+      border-radius: 9px;
+      background: #eeeaff;
+      color: var(--purple-dark);
+      font-size: 13px;
+      font-weight: 800;
+      margin-bottom: 12px;
+    }
+
+    .step h3 {
+      margin: 0 0 6px;
+      font-size: 15px;
+      letter-spacing: -0.02em;
+    }
+
+    .step p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    footer {
+      margin-top: 28px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.6;
+      padding-bottom: 20px;
+    }
+
+    @media (max-width: 860px) {
+      .grid { grid-template-columns: 1fr; }
+      .steps { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-mark">▣</div>
+        <div>App Builder</div>
+      </div>
+      <div class="topnote">Créer une application à partir d’un site web</div>
+    </header>
+
+    <section class="grid">
+      <div class="panel form-panel">
+        <div class="header">
+          <div class="eyebrow">✦ Projet d’application</div>
+          <h1>Créez votre application</h1>
+          <p class="subtitle">
+            Saisissez les informations du site, choisissez une couleur et préparez votre projet.
+          </p>
+        </div>
+
+        <form id="appForm">
+          <div class="field">
+            <label for="siteUrl">Adresse du site web</label>
+            <input id="siteUrl" type="url" placeholder="https://www.exemple.fr" required />
+            <div class="hint">L’URL doit commencer par http:// ou https://.</div>
+          </div>
+
+          <div class="field">
+            <label for="appName">Nom de l’application</label>
+            <input id="appName" type="text" placeholder="Mon application" maxlength="40" required />
+          </div>
+
+          <div class="field">
+            <div class="field-title">Plateformes</div>
+            <div class="platform-grid">
+              <label class="platform">
+                <input type="checkbox" name="platform" value="Android" checked />
+                <span>Android</span>
+              </label>
+              <label class="platform">
+                <input type="checkbox" name="platform" value="iOS" checked />
+                <span>iOS</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="field">
+            <div class="field-title">Couleur principale</div>
+            <div class="color-row">
+              <input id="themeColor" type="color" value="#6754e8" />
+              <span id="colorValue" class="color-value">#6754E8</span>
+            </div>
+          </div>
+
+          <button type="submit">Créer la configuration</button>
+
+          <div id="status" class="status" role="status" aria-live="polite"></div>
+        </form>
+      </div>
+
+      <aside class="panel preview-panel">
+        <div class="preview-head">Aperçu mobile</div>
+
+        <div class="phone">
+          <div class="screen">
+            <div class="status-bar">
+              <span>9:41</span>
+              <span>◉◉◉</span>
+            </div>
+
+            <div id="previewHeader" class="app-header">Mon application</div>
+
+            <div class="preview-content">
+              <div id="previewIcon" class="preview-icon">▣</div>
+              <strong id="previewTitle">Votre site ici</strong>
+              <span>Application web prête à être configurée.</span>
+              <div id="previewSite" class="site-url">votre-site.fr</div>
+            </div>
+
+            <div class="bottom-nav">
+              <span>⌂</span>
+              <span>★</span>
+              <span>☰</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="preview-caption">
+          Aperçu visuel d’une application mobile générée à partir d’un site web.
+        </div>
+      </aside>
+    </section>
+
+    <section class="steps">
+      <article class="step">
+        <div class="step-number">1</div>
+        <h3>Renseignez</h3>
+        <p>Indiquez l’URL du site, le nom de l’application et les plateformes ciblées.</p>
+      </article>
+
+      <article class="step">
+        <div class="step-number">2</div>
+        <h3>Personnalisez</h3>
+        <p>Choisissez la couleur, l’identité visuelle et le rendu attendu sur mobile.</p>
+      </article>
+
+      <article class="step">
+        <div class="step-number">3</div>
+        <h3>Exportez</h3>
+        <p>Téléchargez une configuration JSON de votre projet pour le transmettre à un service de build.</p>
+      </article>
+    </section>
+
+    <footer>
+      Ce fichier HTML crée une application web de démonstration et exporte une configuration.<br>
+      Une vraie application Android/iOS native demande un backend + compilation mobile réelle.
+    </footer>
+  </div>
+
+  <script>
+    const form = document.getElementById("appForm");
+    const siteUrlInput = document.getElementById("siteUrl");
+    const appNameInput = document.getElementById("appName");
+    const themeColorInput = document.getElementById("themeColor");
+    const colorValue = document.getElementById("colorValue");
+    const previewHeader = document.getElementById("previewHeader");
+    const previewTitle = document.getElementById("previewTitle");
+    const previewSite = document.getElementById("previewSite");
+    const previewIcon = document.getElementById("previewIcon");
+    const status = document.getElementById("status");
+
+    function isValidUrl(value) {
+      try {
+        const url = new URL(value);
+        return (url.protocol === "http:" || url.protocol === "https:");
+      } catch {
+        return false;
+      }
+    }
+
+    function updatePreview() {
+      const name = appNameInput.value.trim() || "Mon application";
+      const value = siteUrlInput.value.trim();
+      const url = isValidUrl(value) ? new URL(value) : null;
+
+      previewHeader.textContent = name;
+      previewTitle.textContent = "Votre site ici";
+      previewSite.textContent = url ? url.hostname : "votre-site.fr";
+      colorValue.textContent = themeColorInput.value.toUpperCase();
+
+      const color = themeColorInput.value;
+      document.documentElement.style.setProperty("--purple", color);
+      previewHeader.style.background = color;
+      previewIcon.style.color = color;
+      previewIcon.style.background = hexToRgba(color, 0.14);
+    }
+
+    function hexToRgba(hex, alpha) {
+      const clean = hex.replace("#", "");
+      const value = clean.length === 3
+        ? clean.split("").map(c => c + c).join("")
+        : clean;
+
+      const num = Number.parseInt(value, 16);
+      const r = (num >> 16) & 255;
+      const g = (num >> 8) & 255;
+      const b = num & 255;
+
+      return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+    }
+
+    function showStatus(message, type) {
+      status.textContent = message;
+      status.className = "status " + type;
+    }
+
+    siteUrlInput.addEventListener("input", updatePreview);
+    appNameInput.addEventListener("input", updatePreview);
+    themeColorInput.addEventListener("input", updatePreview);
+
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+
+      const siteUrl = siteUrlInput.value.trim();
+      const appName = appNameInput.value.trim();
+      const platforms = Array.from(document.querySelectorAll('input[name="platform"]:checked')).map(el => el.value);
+
+      if (!isValidUrl(siteUrl)) {
+        showStatus("Entrez une URL valide commençant par http:// ou https://.", "warning");
+        return;
+      }
+
+      if (!appName) {
+        showStatus("Donnez un nom à votre application.", "warning");
+        return;
+      }
+
+      if (platforms.length === 0) {
+        showStatus("Sélectionnez au moins une plateforme.", "warning");
+        return;
+      }
+
+      const config = {
+        appName,
+        websiteUrl: siteUrl,
+        primaryColor: themeColorInput.value,
+        platforms,
+        generatedAt: new Date().toISOString(),
+        format: "single-file-demo"
+      };
+
+      const json = JSON.stringify(config, null, 2);
+      const blob = new Blob([json], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+
+      const a = document.createElement("a");
+      const safeName = appName
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-+|-+$/g, "") || "application";
+
+      a.href = url;
+      a.download = `${safeName}-config.json`;
+      a.click();
+
+      URL.revokeObjectURL(url);
+
+      showStatus("Configuration exportée. Ce fichier est prêt à être envoyé à un service de compilation mobile.", "success");
+    });
+
+    updatePreview();
+  </script>
+</body>
+              </html>
